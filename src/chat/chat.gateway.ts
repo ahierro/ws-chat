@@ -1,4 +1,4 @@
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { ChatService } from './chat.service';
 import { Server, Socket } from 'socket.io';
 import { OnModuleInit } from '@nestjs/common';
@@ -47,4 +47,28 @@ export class ChatGateway implements OnModuleInit {
       
     })
   }
+
+
+  @SubscribeMessage('send-message')
+  handleMessage(@MessageBody() message: string, @ConnectedSocket() client: Socket) {
+
+    const { name } = client.handshake.auth;
+
+    if (!message) {
+      return;
+    }
+
+    // this.server.to('fernando@google.com').emit('on-message', 'Este es un mensaje privado');
+
+    this.server.emit('on-message', {
+      userId: client.id,
+      message: message,
+      name: name
+    })
+
+  }
+
+
+
+
 }
