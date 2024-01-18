@@ -10,6 +10,8 @@ $ npm install
 ```
 
 $ npm i --save @nestjs/websockets @nestjs/platform-socket.io
+$ npm i socket.io
+$ npm install @nestjs/serve-static
 
 ## Running the app
 
